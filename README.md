@@ -11,9 +11,10 @@ The public front door to the DTI Digital Campus, published with GitHub Pages.
 ## Changing the ticker
 
 **From SharePoint (once connected):** add, edit or delete rows in the **Landing Updates** list
-(Title, Colour, Show until) on the Digital Campus site, or tick **Show on landing page** on an event
-in the **Events** list. The ticker updates within about 15 minutes. Past "Show until" dates and
-finished events drop off by themselves.
+(Title, Colour, Show until) on the Digital Campus site. Only the admins in the list's own
+permissions can edit it, so everything on the public ticker comes from them. The ticker updates
+within about 15 minutes, and items drop off by themselves after their "Show until" date. To feature
+an event, add a row for it (e.g. "Graduation Ceremony — 12 December") with Show until set to that day.
 
 **Until then:** edit `site/updates.json` on GitHub (pencil icon → Commit changes). Colours: gold,
 cyan, orange, crimson, blue, maroon. `until` (YYYY-MM-DD) is optional.
