@@ -1,5 +1,5 @@
 // Builds site/updates.json (the landing page ticker) from the SharePoint "Landing Updates"
-// list: Title, Colour (choice), ShowUntil (date, optional). Only admins can edit that list,
+// list: Title, Color (choice), ShowUntil (date, optional). Only admins can edit that list,
 // so everything on the public ticker comes from them.
 // Runs in GitHub Actions with an app that can only read the Digital Campus site
 // (Microsoft Graph "Sites.Selected"). Without the app's details it does nothing, and if
@@ -56,11 +56,11 @@ async function main() {
   const site = await graph(accessToken, `/sites/${SITE}?$select=id`);
   const today = day(new Date());
 
-  const items = (await listItems(accessToken, site.id, LIST, ['Title', 'Colour', 'ShowUntil']))
+  const items = (await listItems(accessToken, site.id, LIST, ['Title', 'Color', 'ShowUntil']))
     .filter(f => f.Title && (!f.ShowUntil || day(new Date(f.ShowUntil)) >= today))
     .map(f => ({
       text: String(f.Title).trim(),
-      colour: COLOURS.includes(String(f.Colour || '').toLowerCase()) ? String(f.Colour).toLowerCase() : 'gold',
+      colour: COLOURS.includes(String(f.Color || '').toLowerCase()) ? String(f.Color).toLowerCase() : 'gold',
       ...(f.ShowUntil ? { until: day(new Date(f.ShowUntil)) } : {})
     }))
     .slice(0, MAX_ITEMS);
