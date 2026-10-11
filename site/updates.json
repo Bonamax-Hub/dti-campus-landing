@@ -2,7 +2,7 @@
   "source": "sharepoint",
   "items": [
     {
-      "text": "October is Breast Cancer Awareness Month",
+      "text": "Cyber Security Awareness:",
       "colour": "gold",
       "until": "2026-10-31"
     },
@@ -42,7 +42,7 @@
       "until": "2026-10-31"
     },
     {
-      "text": "Lock your screen when you step away â€” Windows key + L",
+      "text": "Lock your screen when you step away ” Windows key + L",
       "colour": "crimson",
       "until": "2026-10-31"
     }
