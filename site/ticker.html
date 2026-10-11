@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'">
+<title>DTI Digital Campus — live updates</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;800&display=swap" rel="stylesheet">
+<style>
+/* The ticker on its own, for embedding in SharePoint (Embed web part) next to the
+   landing page's copy. Both read the same updates.json, so they never disagree. */
+:root{--crimson:#C4002C;--yellow:#FFC12D}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:transparent}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif}
+.wrap[hidden]{display:none}
+.wrap{position:relative;height:100%;min-height:48px;display:flex;align-items:center;overflow:hidden;background:#1F0604;color:#F0DCD8;border-top:1px solid rgba(255,193,45,.25);border-bottom:1px solid rgba(255,193,45,.25)}
+.live{position:relative;z-index:2;flex:0 0 auto;display:flex;align-items:center;gap:8px;height:100%;padding:0 18px 0 20px;background:var(--crimson);color:#FFF;font-size:12px;font-weight:800;letter-spacing:.1em}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,193,45,.6)}100%{box-shadow:0 0 0 12px rgba(255,193,45,0)}}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--yellow);animation:pulse 2.2s infinite}
+@keyframes tick{to{transform:translateX(-50%)}}
+.strip{display:flex;width:max-content;animation:tick 48s linear infinite}
+.wrap:hover .strip,.wrap.paused .strip{animation-play-state:paused}
+.strip span{display:inline-flex;align-items:center;gap:12px;padding:0 28px;font-size:14px;font-weight:600;white-space:nowrap}
+.strip span i{width:6px;height:6px;border-radius:2px;display:block;flex:0 0 auto}
+/* Tapping or focusing the strip pauses it, so it is not mouse-only. */
+.pause{position:absolute;inset:0;z-index:3;border:0;background:transparent;cursor:pointer;color:transparent;font-size:0}
+.pause:focus-visible{outline:3px solid var(--yellow);outline-offset:-3px}
+@media (prefers-reduced-motion:reduce){
+  .strip{animation:none}
+  .live i{animation:none}
+  .wrap{overflow-x:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap" id="wrap" hidden>
+  <span class="live"><i></i>LIVE</span>
+  <div class="strip" id="strip" aria-label="Latest updates"></div>
+  <button class="pause" id="pause" aria-label="Pause the updates">Pause</button>
+</div>
+
+<script>
+  // Same items as the landing page: site/updates.json, written from the SharePoint
+  // "Landing Updates" list. Nothing to edit here — add or remove rows in that list.
+  var COLOURS = { gold: '#FFC12D', cyan: '#00C7CD', orange: '#FF8825', crimson: '#C4002C', blue: '#2949AA', maroon: '#8E2219' };
+  var wrap = document.getElementById('wrap'), strip = document.getElementById('strip');
+
+  function render(data) {
+    var today = new Date().toISOString().slice(0, 10);
+    var items = (data.items || []).filter(function (u) { return u && u.text && (!u.until || u.until >= today); });
+    strip.textContent = '';
+    if (!items.length) { wrap.hidden = true; return; }
+    // Repeat short lists so the strip is always full, then twice over for a seamless loop.
+    var half = items;
+    while (half.length < 6) { half = half.concat(items); }
+    half.concat(half).forEach(function (u) {
+      var s = document.createElement('span'), dot = document.createElement('i');
+      dot.style.background = COLOURS[String(u.colour || '').toLowerCase()] || COLOURS.gold;
+      s.appendChild(dot); s.appendChild(document.createTextNode(u.text)); strip.appendChild(s);
+    });
+    strip.style.animationDuration = (half.length * 2 * 4.5) + 's';
+    wrap.hidden = false;
+  }
+
+  function load() {
+    fetch('updates.json', { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : { items: [] }; })
+      .then(render)
+      .catch(function () { /* keep whatever is on screen */ });
+  }
+
+  load();
+  // This page may sit open on a screen all day, so pick up new items by itself.
+  setInterval(load, 5 * 60 * 1000);
+
+  document.getElementById('pause').addEventListener('click', function () {
+    var paused = wrap.classList.toggle('paused');
+    this.setAttribute('aria-label', paused ? 'Resume the updates' : 'Pause the updates');
+  });
+</script>
+</body>
+</html>
