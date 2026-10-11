@@ -10,14 +10,13 @@
 <link rel="icon" type="image/png" href="assets/dti-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Big+Shoulders+Display:wght@700..900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--maroon:#5F1510;--maroon-dk:#2E0907;--crimson:#C4002C;--blue:#2949AA;--cyan:#00C7CD;--orange:#FF8825;--yellow:#FFC12D;--ink:#1C1412;--muted:#4F4441}
 *{box-sizing:border-box}
 html,body{margin:0}
 body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink);background:var(--maroon-dk);display:flex;flex-direction:column;min-height:100vh}
 a{color:inherit}
-.serif{font-family:'Fraunces',Georgia,serif;font-optical-sizing:auto}
 a:focus-visible,button:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
 .stripe{height:5px;background:linear-gradient(90deg,var(--cyan) 0 16.66%,var(--maroon) 16.66% 33.33%,var(--blue) 33.33% 50%,var(--crimson) 50% 66.66%,var(--orange) 66.66% 83.33%,var(--yellow) 83.33% 100%)}
 
@@ -33,7 +32,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--yellow);outline-off
 .brand img{height:48px;width:auto;display:block}
 .brand .divider{width:1px;height:32px;background:rgba(95,21,16,.18)}
 .brand .name{display:flex;flex-direction:column;line-height:1.15}
-.brand .name b{font-family:'Fraunces',Georgia,serif;font-size:17px;font-weight:600;color:var(--maroon)}
+.brand .name b{font-family:'Big Shoulders Display',system-ui,sans-serif;font-size:22px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;color:var(--maroon)}
 .brand .name small{font-size:12px;color:var(--muted);font-weight:500}
 .actions{display:flex;align-items:center;gap:10px}
 .help{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:12px;border:1px solid rgba(255,255,255,.9);background:rgba(255,255,255,.72);font-size:14px;font-weight:700;text-decoration:none;color:var(--ink)}
@@ -55,8 +54,27 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--yellow);outline-off
 .pill{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;padding:7px 14px 7px 7px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.24);backdrop-filter:blur(12px);font-size:13px;font-weight:600}
 .pill .bars{display:inline-flex;gap:3px;padding:6px 8px;border-radius:999px;background:rgba(0,0,0,.25)}
 .pill .bars i{width:6px;height:12px;border-radius:2px;display:block}
-h1{margin:0;font-family:'Fraunces',Georgia,serif;font-size:clamp(42px,6vw,68px);line-height:1;letter-spacing:-.035em;font-weight:500}
-h1 em{color:var(--yellow)}
+/* Headline: "Welcome to the" in Bungee Spice (its gold-to-red gradient is built into the
+   letters), sized by script to the exact width of "DTI DIGITAL"; DTI glows in the stripe
+   colours; "Digital Campus" carries the gold-to-crimson gradient. A wave rolls through it all. */
+h1{margin:0;font-weight:400;display:inline-flex;flex-direction:column;align-self:flex-start}
+h1 .line{display:block;white-space:nowrap;width:max-content}
+h1 .pre{font-family:'Bungee Spice',system-ui,sans-serif;font-size:30px;line-height:1;margin-bottom:.22em}
+h1 .big{font-family:'Big Shoulders Display',system-ui,sans-serif;font-weight:900;font-size:clamp(60px,7.2vw,100px);line-height:.86;text-transform:uppercase;letter-spacing:.005em}
+h1 .ch{display:inline-block;transform-origin:50% 80%;animation:wave 2.6s ease-in-out infinite}
+h1 .sp{display:inline-block;width:.28em}
+h1 .pre .sp{width:.36em}
+@keyframes wave{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-.11em) rotate(-3deg)}75%{transform:translateY(.07em) rotate(2deg)}}
+h1 .pre .ch{animation-name:waveSoft;animation-duration:3.2s}
+@keyframes waveSoft{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-.16em) rotate(-2deg)}}
+h1 .word .ch{background:linear-gradient(180deg,#FFE08A 0%,var(--yellow) 38%,var(--orange) 70%,var(--crimson) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+h1 .dti .ch{--g:0,199,205;color:#33E4E9;text-shadow:0 0 6px rgba(var(--g),.9),0 0 18px rgba(var(--g),.65),0 0 36px rgba(var(--g),.35);animation:wave 2.6s ease-in-out infinite,neon 2.4s ease-in-out infinite}
+h1 .dti .ch:nth-child(2){--g:255,193,45;color:#FFD45C}
+h1 .dti .ch:nth-child(3){--g:255,40,80;color:#FF3B5F}
+@keyframes neon{
+  0%,100%{text-shadow:0 0 4px rgba(var(--g),.7),0 0 10px rgba(var(--g),.4),0 0 22px rgba(var(--g),.2)}
+  50%{text-shadow:0 0 8px rgba(var(--g),1),0 0 24px rgba(var(--g),.8),0 0 52px rgba(var(--g),.55)}
+}
 .lead{margin:0;font-size:20px;line-height:1.55;color:#F0DCD8;max-width:560px}
 .rot{margin:0;font-size:15px;font-weight:600;color:#F0DCD8;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .rot-word{display:inline-flex;overflow:hidden;height:26px;padding:0 12px;border-radius:8px;background:rgba(255,193,45,.16);border:1px solid rgba(255,193,45,.45);color:var(--yellow);font-weight:800;align-items:center}
@@ -71,7 +89,7 @@ h1 em{color:var(--yellow)}
 .card:hover{transform:translateY(-6px);background:rgba(46,9,7,.72);border-color:rgba(255,193,45,.7);box-shadow:0 30px 60px -24px rgba(0,0,0,.6)}
 .card .icon{flex:0 0 60px;height:60px;border-radius:18px;display:flex;align-items:center;justify-content:center}
 .card .text{flex:1;display:flex;flex-direction:column;gap:4px}
-.card .text b{font-size:20px;font-weight:800}
+.card .text b{font-family:'Big Shoulders Display',system-ui,sans-serif;font-size:26px;line-height:1;font-weight:800;text-transform:uppercase;letter-spacing:.03em}
 .card .text span{font-size:14px;color:#F0DCD8;line-height:1.45}
 .card .arrow{font-size:22px;font-weight:800;transition:transform .32s}
 .card:hover .arrow{transform:translateX(6px)}
@@ -95,6 +113,11 @@ h1 em{color:var(--yellow)}
 .ticker span{display:inline-flex;align-items:center;gap:12px;padding:0 28px;font-size:14px;font-weight:600;white-space:nowrap}
 .ticker span i{width:6px;height:6px;border-radius:2px;display:block}
 
+/* Shorter laptop screens: a little less space around the hero so it still fits on one screen. */
+@media (min-width:761px) and (max-height:780px){
+  .hero-inner{padding-top:52px;padding-bottom:60px}
+  .hero-copy{gap:18px}
+}
 @media (max-width:760px){
   .hero-shade{background:linear-gradient(rgba(31,6,4,.86),rgba(31,6,4,.86))}
   .hero-inner{padding:36px 16px 44px;gap:32px}
@@ -102,7 +125,7 @@ h1 em{color:var(--yellow)}
   .pill{font-size:12px}
   .card{padding:18px;gap:16px;border-radius:22px}
   .card .icon{flex-basis:52px;height:52px;border-radius:16px}
-  .card .text b{font-size:18px}
+  .card .text b{font-size:22px}
   .bar{padding:10px 16px}
   .brand img{height:40px}
   .brand .divider,.brand .name small{display:none}
@@ -111,7 +134,7 @@ h1 em{color:var(--yellow)}
 @media (max-width:480px){
   .bar{flex-wrap:nowrap;gap:10px}
   .brand img{height:34px}
-  .brand .name b{font-size:15px;white-space:nowrap}
+  .brand .name b{font-size:19px;white-space:nowrap}
   .signin{white-space:nowrap;min-height:42px}
   .help{display:none}
   .signin{padding:0 16px}
@@ -145,7 +168,7 @@ h1 em{color:var(--yellow)}
   <div class="hero-inner">
     <div class="hero-copy">
       <span class="pill r1"><span class="bars"><i style="background:var(--cyan)"></i><i style="background:var(--crimson)"></i><i style="background:var(--yellow)"></i></span>Reshaping how Africa learns, works and leads the future</span>
-      <h1 class="r2">Welcome to the <em>DTI Digital Campus</em></h1>
+      <h1 class="r2" aria-label="Welcome to the DTI Digital Campus"><span class="line pre" data-split>Welcome to the</span><span class="line big" id="h1-fit"><span class="dti" data-split>DTI</span><span class="sp"></span><span class="word" data-split>Digital</span></span><span class="line big"><span class="word" data-split>Campus</span></span></h1>
       <p class="lead r3">Connecting Students, Faculty, and Staff through a unified digital experience.</p>
       <p class="rot r3">One workspace for <span class="rot-word" aria-live="polite"><span id="rot">Learners</span></span></p>
       <span class="secure r4"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFC12D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z M9 12l2 2 4-4"/></svg>Secure single sign-on with your DTI Microsoft 365 account</span>
@@ -178,6 +201,28 @@ h1 em{color:var(--yellow)}
   // then the Digital Campus shows the right view from the person's security group.
   var CAMPUS_URL = 'https://dtighana.sharepoint.com/sites/DTI_DIGITAL_CAMPUS';
   document.querySelectorAll('[data-campus-link]').forEach(function (a) { a.href = CAMPUS_URL; });
+
+  // Headline: each letter becomes its own span so the wave can roll through, each one
+  // starting a little after the last. Screen readers read the h1's label instead.
+  var n = 0;
+  document.querySelectorAll('h1 [data-split]').forEach(function (el) {
+    var text = el.textContent; el.textContent = ''; el.setAttribute('aria-hidden', 'true');
+    Array.prototype.forEach.call(text, function (c) {
+      var s = document.createElement('span');
+      if (c === ' ') { s.className = 'sp'; } else { s.className = 'ch'; s.textContent = c; s.style.animationDelay = (-n * 0.12) + 's'; n++; }
+      el.appendChild(s);
+    });
+  });
+  // "Welcome to the" spans exactly the width of "DTI DIGITAL" beneath it.
+  function fitHeadline() {
+    var pre = document.querySelector('h1 .pre'), target = document.getElementById('h1-fit');
+    pre.style.fontSize = '30px';
+    pre.style.fontSize = (30 * target.offsetWidth / pre.offsetWidth) + 'px';
+  }
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fitHeadline); } else { fitHeadline(); }
+  // Re-fit whenever "DTI DIGITAL" changes size (window resized, phone rotated, fonts loaded).
+  if (window.ResizeObserver) { new ResizeObserver(fitHeadline).observe(document.getElementById('h1-fit')); }
+  else { window.addEventListener('resize', fitHeadline); }
 
   var words = ['Learners', 'Faculty', 'Staff', 'Medical teams', 'Management'];
   var i = 0, rot = document.getElementById('rot');
