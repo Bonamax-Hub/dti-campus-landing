@@ -5,6 +5,46 @@
       "text": "October is Breast Cancer Awareness Month",
       "colour": "gold",
       "until": "2026-10-31"
+    },
+    {
+      "text": "Stop. Think. Before you click.",
+      "colour": "orange",
+      "until": "2026-10-31"
+    },
+    {
+      "text": "DTI IT will never ask you for your password",
+      "colour": "crimson",
+      "until": "2026-10-31"
+    },
+    {
+      "text": "Turn on multi-factor authentication for your DTI account",
+      "colour": "blue",
+      "until": "2026-10-31"
+    },
+    {
+      "text": "Never share your DTI login, not even with a classmate",
+      "colour": "gold",
+      "until": "2026-10-31"
+    },
+    {
+      "text": "Nobody from DTI will ever ask for your Mobile Money PIN",
+      "colour": "gold",
+      "until": "2026-10-31"
+    },
+    {
+      "text": "A scholarship or job that asks for a fee is a scam",
+      "colour": "cyan",
+      "until": "2026-10-31"
+    },
+    {
+      "text": "Suspicious email? Use Report in Outlook, then delete it",
+      "colour": "orange",
+      "until": "2026-10-31"
+    },
+    {
+      "text": "Lock your screen when you step away â€” Windows key + L",
+      "colour": "crimson",
+      "until": "2026-10-31"
     }
   ]
 }
