@@ -1,6 +1,10 @@
 {
+  "source": "sharepoint",
   "items": [
-    { "text": "October is Breast Cancer Awareness Month", "colour": "gold", "until": "2026-10-31" },
-    { "text": "October is Cybersecurity Awareness Month", "colour": "cyan", "until": "2026-10-31" }
+    {
+      "text": "October is Breast Cancer Awareness Month",
+      "colour": "gold",
+      "until": "2026-10-31"
+    }
   ]
 }
