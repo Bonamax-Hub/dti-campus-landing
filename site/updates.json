@@ -45,6 +45,11 @@
       "text": "Lock your screen when you step away ” Windows key + L",
       "colour": "crimson",
       "until": "2026-10-31"
+    },
+    {
+      "text": "October is Breast Cancer Awareness Month",
+      "colour": "cyan",
+      "until": "2026-10-31"
     }
   ]
 }
