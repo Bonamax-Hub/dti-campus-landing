@@ -10,7 +10,7 @@
 <link rel="icon" type="image/png" href="assets/dti-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Inline&family=Big+Shoulders+Display:wght@700..900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Big+Shoulders+Display:wght@700..900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--maroon:#5F1510;--maroon-dk:#2E0907;--crimson:#C4002C;--blue:#2949AA;--cyan:#00C7CD;--orange:#FF8825;--yellow:#FFC12D;--ink:#1C1412;--muted:#4F4441}
 *{box-sizing:border-box}
@@ -271,12 +271,20 @@ h1 .ch svg.glyph{position:absolute;left:0;top:0;width:100%;height:100%;overflow:
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <!-- "Welcome to the": Spice body (yellow to red) and its reversed line (red-orange to yellow) -->
-    <linearGradient id="g-pre-body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE14D"/><stop offset=".4" stop-color="#FFB81C"/><stop offset=".7" stop-color="#FF7A12"/><stop offset="1" stop-color="#E2231A"/></linearGradient>
-    <linearGradient id="g-pre-line" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E8500E"/><stop offset=".45" stop-color="#FF9A1A"/><stop offset="1" stop-color="#FFD23A"/></linearGradient>
+    <linearGradient id="g-pre-body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFC12D"/><stop offset=".4" stop-color="#FF9A1A"/><stop offset=".7" stop-color="#FF6A12"/><stop offset="1" stop-color="#D91C1A"/></linearGradient>
+    <!-- A light cream line, like "Digital Campus", so it shows clearly against the gold-to-red letter. -->
+    <linearGradient id="g-pre-line" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF7D6"/><stop offset="1" stop-color="#FFE58C"/></linearGradient>
     <!-- "Digital Campus": the current gold-to-crimson body; the line runs the other way -->
     <linearGradient id="g-word-body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE08A"/><stop offset=".38" stop-color="#FFC12D"/><stop offset=".7" stop-color="#FF8825"/><stop offset="1" stop-color="#C4002C"/></linearGradient>
     <linearGradient id="g-word-line" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF7A2A"/><stop offset=".5" stop-color="#FFC24A"/><stop offset="1" stop-color="#FFF0B0"/></linearGradient>
-    <!-- Thin inner line: shrink the letter twice and keep the band between (radii set by script) -->
+    <!-- Thin inner line: shrink the letter twice and keep the band between (radii set by script).
+         One filter for the big letters and one for "Welcome to the", which is smaller. -->
+    <filter id="g-inline-pre" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feMorphology in="SourceAlpha" operator="erode" radius="2" result="outer"/>
+      <feMorphology in="SourceAlpha" operator="erode" radius="3" result="inner"/>
+      <feComposite in="outer" in2="inner" operator="out" result="band"/>
+      <feComposite in="SourceGraphic" in2="band" operator="in"/>
+    </filter>
     <filter id="g-inline" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
       <feMorphology in="SourceAlpha" operator="erode" radius="3" result="outer"/>
       <feMorphology in="SourceAlpha" operator="erode" radius="5" result="inner"/>
@@ -306,13 +314,17 @@ h1 .ch svg.glyph{position:absolute;left:0;top:0;width:100%;height:100%;overflow:
       el.removeChild(mark);
       return y / fs;
     }
+    function setRadii(filterId, letter, inset, depth) {
+      // The line's inset and thickness follow the letter size (Bungee's strokes are thicker,
+      // so "Welcome to the" uses larger proportions than the Big Shoulders letters).
+      var fs = letter ? parseFloat(getComputedStyle(letter).fontSize) : 100;
+      var m = document.querySelectorAll('#' + filterId + ' feMorphology');
+      m[0].setAttribute('radius', Math.max(1, fs * inset).toFixed(2));
+      m[1].setAttribute('radius', Math.max(1.8, fs * depth).toFixed(2));
+    }
     function lineRadii() {
-      // Line inset and thickness follow the size of "Digital Campus".
-      var w = h1.querySelector('.word .ch');
-      var fs = w ? parseFloat(getComputedStyle(w).fontSize) : 100;
-      var m = document.querySelectorAll('#g-inline feMorphology');
-      m[0].setAttribute('radius', (fs * 0.03).toFixed(2));
-      m[1].setAttribute('radius', (fs * 0.048).toFixed(2));
+      setRadii('g-inline', h1.querySelector('.word .ch'), 0.03, 0.048);
+      setRadii('g-inline-pre', h1.querySelector('.pre .ch'), 0.06, 0.1);
     }
     function build() {
       h1.querySelectorAll('.ch').forEach(function (ch) {
@@ -322,8 +334,8 @@ h1 .ch svg.glyph{position:absolute;left:0;top:0;width:100%;height:100%;overflow:
         var svg = document.createElementNS(NS, 'svg');
         svg.setAttribute('class', 'glyph'); svg.setAttribute('aria-hidden', 'true');
         if (ch.closest('.pre')) {
-          svg.appendChild(text(c, { x: 0, y: y, fill: 'url(#g-pre-line)', 'font-family': 'Bungee' }));
-          svg.appendChild(text(c, { x: 0, y: y, fill: 'url(#g-pre-body)', 'font-family': 'Bungee Inline' }));
+          svg.appendChild(text(c, { x: 0, y: y, fill: 'url(#g-pre-body)', 'font-family': 'Bungee' }));
+          svg.appendChild(text(c, { x: 0, y: y, fill: 'url(#g-pre-line)', 'font-family': 'Bungee', filter: 'url(#g-inline-pre)' }));
         } else if (ch.closest('.dti')) {
           var i = Array.prototype.indexOf.call(ch.parentNode.querySelectorAll('.ch'), ch);
           svg.appendChild(text(c, { x: 0, y: y, fill: DTI_FILL[i] || DTI_FILL[0] }));
@@ -337,7 +349,11 @@ h1 .ch svg.glyph{position:absolute;left:0;top:0;width:100%;height:100%;overflow:
       lineRadii();
       h1.classList.add('lined');
     }
-    (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(build);
+    // Load the headline fonts first, so the drawings use them from the start.
+    var fontsReady = document.fonts && document.fonts.load
+      ? Promise.all(['1em "Bungee"', '900 1em "Big Shoulders Display"'].map(function (f) { return document.fonts.load(f); }))
+      : Promise.resolve();
+    fontsReady.then(build, build);
     window.addEventListener('resize', lineRadii);
   })();
 </script>
