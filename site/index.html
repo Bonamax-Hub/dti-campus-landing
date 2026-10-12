@@ -10,7 +10,7 @@
 <link rel="icon" type="image/png" href="assets/dti-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Big+Shoulders+Display:wght@700..900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Big+Shoulders+Display:wght@700..900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--maroon:#5F1510;--maroon-dk:#2E0907;--crimson:#C4002C;--blue:#2949AA;--cyan:#00C7CD;--orange:#FF8825;--yellow:#FFC12D;--ink:#1C1412;--muted:#4F4441}
 *{box-sizing:border-box}
@@ -54,12 +54,14 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--yellow);outline-off
 .pill{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;padding:7px 14px 7px 7px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.24);backdrop-filter:blur(12px);font-size:13px;font-weight:600}
 .pill .bars{display:inline-flex;gap:3px;padding:6px 8px;border-radius:999px;background:rgba(0,0,0,.25)}
 .pill .bars i{width:6px;height:12px;border-radius:2px;display:block}
-/* Headline: "Welcome to the" in Bungee Spice (its gold-to-red gradient is built into the
-   letters), sized by script to the exact width of "DTI DIGITAL"; DTI glows in the stripe
+/* Headline: "Welcome to the" in Bungee with a gold-to-red gradient painted into each letter
+   (the Bungee Spice look; Spice itself is a COLRv1 colour font, which Safari on iPhone
+   doesn't draw), sized by script to the exact width of "DTI DIGITAL"; DTI glows in the stripe
    colours; "Digital Campus" carries the gold-to-crimson gradient. A wave rolls through it all. */
 h1{margin:0;font-weight:400;display:inline-flex;flex-direction:column;align-self:flex-start}
 h1 .line{display:block;white-space:nowrap;width:max-content}
-h1 .pre{font-family:'Bungee Spice',system-ui,sans-serif;font-size:30px;line-height:1;margin-bottom:.22em}
+h1 .pre{font-family:'Bungee',system-ui,sans-serif;font-size:30px;line-height:1;margin-bottom:.22em}
+h1 .pre .ch{background:linear-gradient(180deg,#FFE14D 0%,#FFB81C 40%,#FF7A12 70%,#E2231A 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
 h1 .big{font-family:'Big Shoulders Display',system-ui,sans-serif;font-weight:900;font-size:clamp(60px,7.2vw,100px);line-height:.86;text-transform:uppercase;letter-spacing:.005em}
 h1 .ch{display:inline-block;transform-origin:50% 80%;animation:wave 2.6s ease-in-out infinite}
 h1 .sp{display:inline-block;width:.28em}
