@@ -10,7 +10,7 @@
 <link rel="icon" type="image/png" href="assets/dti-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Big+Shoulders+Display:wght@700..900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Inline&family=Big+Shoulders+Display:wght@700..900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--maroon:#5F1510;--maroon-dk:#2E0907;--crimson:#C4002C;--blue:#2949AA;--cyan:#00C7CD;--orange:#FF8825;--yellow:#FFC12D;--ink:#1C1412;--muted:#4F4441}
 *{box-sizing:border-box}
@@ -142,6 +142,14 @@ h1 .dti .ch:nth-child(3){--g:255,40,80;color:#FF3B5F}
   .signin{padding:0 16px}
   .brand{gap:10px}
 }
+/* ===== A thin inner line through every headline letter (the Bungee Spice look) ===== */
+/* Each letter keeps its HTML text (now transparent) for layout, the wave and DTI's glow, and
+   gets a small SVG drawing of itself on top: the coloured letter plus a thin line following
+   its inside. SVG is used because iPhone Safari applies these effects to SVG graphics but not
+   to plain web text. Without the script, the headline simply looks as it does today. */
+h1.lined .ch{position:relative;background:none!important;color:transparent!important;-webkit-text-fill-color:transparent}
+h1.lined .pre .ch,h1.lined .word .ch{text-shadow:none}
+h1 .ch svg.glyph{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -258,6 +266,80 @@ h1 .dti .ch:nth-child(3){--g:255,40,80;color:#FF3B5F}
       document.getElementById('ticker-wrap').hidden = false;
     })
     .catch(function () { /* leave the ticker hidden */ });
+</script>
+<!-- Colours and the inner-line filter for the SVG letters. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- "Welcome to the": Spice body (yellow to red) and its reversed line (red-orange to yellow) -->
+    <linearGradient id="g-pre-body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE14D"/><stop offset=".4" stop-color="#FFB81C"/><stop offset=".7" stop-color="#FF7A12"/><stop offset="1" stop-color="#E2231A"/></linearGradient>
+    <linearGradient id="g-pre-line" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E8500E"/><stop offset=".45" stop-color="#FF9A1A"/><stop offset="1" stop-color="#FFD23A"/></linearGradient>
+    <!-- "Digital Campus": the current gold-to-crimson body; the line runs the other way -->
+    <linearGradient id="g-word-body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE08A"/><stop offset=".38" stop-color="#FFC12D"/><stop offset=".7" stop-color="#FF8825"/><stop offset="1" stop-color="#C4002C"/></linearGradient>
+    <linearGradient id="g-word-line" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF7A2A"/><stop offset=".5" stop-color="#FFC24A"/><stop offset="1" stop-color="#FFF0B0"/></linearGradient>
+    <!-- Thin inner line: shrink the letter twice and keep the band between (radii set by script) -->
+    <filter id="g-inline" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feMorphology in="SourceAlpha" operator="erode" radius="3" result="outer"/>
+      <feMorphology in="SourceAlpha" operator="erode" radius="5" result="inner"/>
+      <feComposite in="outer" in2="inner" operator="out" result="band"/>
+      <feComposite in="SourceGraphic" in2="band" operator="in"/>
+    </filter>
+  </defs>
+</svg>
+<script>
+  // Draw each headline letter as SVG on top of its (now transparent) HTML letter.
+  (function () {
+    var NS = 'http://www.w3.org/2000/svg';
+    var h1 = document.querySelector('h1');
+    var DTI_FILL = ['#33E4E9', '#FFD45C', '#FF3B5F'];
+    function text(content, attrs) {
+      var t = document.createElementNS(NS, 'text');
+      Object.keys(attrs).forEach(function (k) { t.setAttribute(k, attrs[k]); });
+      t.textContent = content;
+      return t;
+    }
+    function baselineEm(el) {
+      // Where the baseline sits inside the letter's box, as a fraction of its font size.
+      var mark = document.createElement('i');
+      mark.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline';
+      el.appendChild(mark);
+      var y = mark.offsetTop, fs = parseFloat(getComputedStyle(el).fontSize);
+      el.removeChild(mark);
+      return y / fs;
+    }
+    function lineRadii() {
+      // Line inset and thickness follow the size of "Digital Campus".
+      var w = h1.querySelector('.word .ch');
+      var fs = w ? parseFloat(getComputedStyle(w).fontSize) : 100;
+      var m = document.querySelectorAll('#g-inline feMorphology');
+      m[0].setAttribute('radius', (fs * 0.03).toFixed(2));
+      m[1].setAttribute('radius', (fs * 0.048).toFixed(2));
+    }
+    function build() {
+      h1.querySelectorAll('.ch').forEach(function (ch) {
+        // The big letters are capitalised by CSS; SVG text doesn't reliably follow that, so upper-case here.
+        var c = ch.closest('.big') ? ch.textContent.toUpperCase() : ch.textContent;
+        var y = baselineEm(ch).toFixed(4) + 'em';
+        var svg = document.createElementNS(NS, 'svg');
+        svg.setAttribute('class', 'glyph'); svg.setAttribute('aria-hidden', 'true');
+        if (ch.closest('.pre')) {
+          svg.appendChild(text(c, { x: 0, y: y, fill: 'url(#g-pre-line)', 'font-family': 'Bungee' }));
+          svg.appendChild(text(c, { x: 0, y: y, fill: 'url(#g-pre-body)', 'font-family': 'Bungee Inline' }));
+        } else if (ch.closest('.dti')) {
+          var i = Array.prototype.indexOf.call(ch.parentNode.querySelectorAll('.ch'), ch);
+          svg.appendChild(text(c, { x: 0, y: y, fill: DTI_FILL[i] || DTI_FILL[0] }));
+          svg.appendChild(text(c, { x: 0, y: y, fill: '#FFFFFF', 'fill-opacity': '.9', filter: 'url(#g-inline)' }));
+        } else {
+          svg.appendChild(text(c, { x: 0, y: y, fill: 'url(#g-word-body)' }));
+          svg.appendChild(text(c, { x: 0, y: y, fill: 'url(#g-word-line)', filter: 'url(#g-inline)' }));
+        }
+        ch.appendChild(svg);
+      });
+      lineRadii();
+      h1.classList.add('lined');
+    }
+    (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(build);
+    window.addEventListener('resize', lineRadii);
+  })();
 </script>
 </body>
 </html>
